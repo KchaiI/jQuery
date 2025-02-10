@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+input{
+    width: 250px;
+    height: 90px;
+    text-align: center;
+    border-color:#fff;
+    padding:20px 50px;
+    border-radius: 50px;
+}
+
+input:hover{
+    cursor:pointer;
+}
+
+.cool {
+    font-size: 40px;
+    color: #000;
+    background-color: #36E4EA;
+    font-family: "Peralta", serif;
+}
+
+.cute {
+    font-size: 32px;
+    letter-spacing: 0.15em;
+    color: #000;
+    background-color: #FD89DA;
+    font-family: "Mochiy Pop One", serif;
+}
