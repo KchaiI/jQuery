@@ -3,3 +3,14 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.resize_box {
+    height: 100vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+img {
+    object-fit: none;
+}
