@@ -65,7 +65,6 @@
 
 
 
-
 // $(document).ready(function () {
 //   var $wrapper = $("#wrapper");
 //   var $content = $("#content");
@@ -76,24 +75,26 @@
 //   var $clone2 = $content.clone().addClass("clone");
 //   $wrapper.append($clone1).append($clone2);
 
+//   // カラーパレット（朝焼け～夕焼け～夜）
+//   let gradients = [
+//       ["#527e99", "#88a5b7"],
+//       ["#88a5b7", "#acbdc7"],
+//       ["#c8ecca", "#eadeb9"],
+//       ["#eadeb9", "#e2a872"],
+//       ["#e2a872", "#7084a5"],
+//       ["#7084a5", "#ada8be"],
+//       ["#ada8be", "#d4b0b5"],
+//       ["#051637", "#1c2c52"],
+//       ["#1c2c52", "#5c658b"],
+//   ];
+
 //   // スクロールイベントを監視（#wrapperのスクロール）
 //   $wrapper.on("scroll", function () {
 //       let scrollTop = $wrapper.scrollTop();
 //       let maxScroll = contentHeight; // 1コンテンツ分でリセットするので最大値は contentHeight
 //       let scrollRatio = scrollTop / maxScroll;
 
-//       // カラーパレット（朝焼け～夕焼け～夜）
-//       let gradients = [
-//           ["#527e99", "#88a5b7"],
-//           ["#88a5b7", "#acbdc7"],
-//           ["#c8ecca", "#eadeb9"],
-//           ["#eadeb9", "#e2a872"],
-//           ["#e2a872", "#7084a5"],
-//           ["#7084a5", "#ada8be"],
-//           ["#ada8be", "#d4b0b5"],
-//           ["#051637", "#1c2c52"],
-//           ["#1c2c52", "#5c658b"],
-//       ];
+//       console.log("scrollTop:", scrollTop, "maxScroll:", maxScroll, "scrollRatio:", scrollRatio); // デバッグ用
 
 //       // グラデーションの補間
 //       let index = Math.floor(scrollRatio * (gradients.length - 1));
@@ -114,6 +115,8 @@
 //       let gradientStart = interpolateColor(color1_start, color2_start, t);
 //       let gradientEnd = interpolateColor(color1_end, color2_end, t);
 
+//       console.log(`gradientStart: ${gradientStart}, gradientEnd: ${gradientEnd}`); // デバッグ用
+
 //       // 背景グラデーションを更新
 //       $("body").css(
 //           "background",
@@ -128,15 +131,79 @@
 // });
 
 
-$(document).ready(function () {
-  var $wrapper = $("#wrapper");
-  var $content = $("#content");
-  var contentHeight = $content.outerHeight(); // メインコンテンツの高さ
 
-  // ループのためにコンテンツを複製
-  var $clone1 = $content.clone().addClass("clone");
-  var $clone2 = $content.clone().addClass("clone");
-  $wrapper.append($clone1).append($clone2);
+
+
+
+
+
+// $(document).ready(function () {
+//   var $window = $(window);
+//   var contentHeight = $(document).height(); // ページ全体の高さ (1200vh)
+
+//   // カラーパレット（朝焼け～夕焼け～夜）
+//   let gradients = [
+//       ["#527e99", "#88a5b7"],
+//       ["#88a5b7", "#acbdc7"],
+//       ["#c8ecca", "#eadeb9"],
+//       ["#eadeb9", "#e2a872"],
+//       ["#e2a872", "#7084a5"],
+//       ["#7084a5", "#ada8be"],
+//       ["#ada8be", "#d4b0b5"],
+//       ["#051637", "#1c2c52"],
+//       ["#1c2c52", "#5c658b"],
+//   ];
+
+//   function updateGradient(scrollTop) {
+//       let maxScroll = contentHeight - $window.height();
+//       let scrollRatio = scrollTop / maxScroll;
+
+//       let index = Math.floor(scrollRatio * (gradients.length - 1));
+//       let t = (scrollRatio * (gradients.length - 1)) % 1; // 小数部分（補間比率）
+
+//       let color1_start = gradients[index][0];
+//       let color1_end = gradients[index][1];
+//       let color2_start = gradients[Math.min(index + 1, gradients.length - 1)][0];
+//       let color2_end = gradients[Math.min(index + 1, gradients.length - 1)][1];
+
+//       function interpolateColor(color1, color2, t) {
+//           let c1 = color1.match(/\w\w/g).map((c) => parseInt(c, 16));
+//           let c2 = color2.match(/\w\w/g).map((c) => parseInt(c, 16));
+//           let result = c1.map((v, i) => Math.round(v * (1 - t) + c2[i] * t));
+//           return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
+//       }
+
+//       let gradientStart = interpolateColor(color1_start, color2_start, t);
+//       let gradientEnd = interpolateColor(color1_end, color2_end, t);
+
+//       $("body").css(
+//           "background",
+//           `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`
+//       );
+//   }
+
+//   $window.on("scroll", function () {
+//       let scrollTop = $window.scrollTop();
+
+//       // 背景グラデーションを更新
+//       updateGradient(scrollTop);
+
+//       // 無限スクロールの実装
+//       if (scrollTop >= contentHeight - $window.height()) {
+//           $window.scrollTop(0);
+//       }
+//   });
+// });
+
+
+
+$(document).ready(function () {
+  var $window = $(window);
+  var contentHeight = 1200 * $(window).height(); // 1200vh
+  var totalScroll = contentHeight * 3; // 全体のスクロール範囲は 3600vh
+
+  // 最初に中央 (1200vh) にスクロールさせる
+  $window.scrollTop(contentHeight);
 
   // カラーパレット（朝焼け～夕焼け～夜）
   let gradients = [
@@ -151,15 +218,10 @@ $(document).ready(function () {
       ["#1c2c52", "#5c658b"],
   ];
 
-  // スクロールイベントを監視（#wrapperのスクロール）
-  $wrapper.on("scroll", function () {
-      let scrollTop = $wrapper.scrollTop();
-      let maxScroll = contentHeight; // 1コンテンツ分でリセットするので最大値は contentHeight
-      let scrollRatio = scrollTop / maxScroll;
+  function updateGradient(scrollTop) {
+      let maxScroll = contentHeight * 2; // 2400vhの範囲でスクロール変化
+      let scrollRatio = (scrollTop % maxScroll) / maxScroll;
 
-      console.log("scrollTop:", scrollTop, "maxScroll:", maxScroll, "scrollRatio:", scrollRatio); // デバッグ用
-
-      // グラデーションの補間
       let index = Math.floor(scrollRatio * (gradients.length - 1));
       let t = (scrollRatio * (gradients.length - 1)) % 1; // 小数部分（補間比率）
 
@@ -178,17 +240,26 @@ $(document).ready(function () {
       let gradientStart = interpolateColor(color1_start, color2_start, t);
       let gradientEnd = interpolateColor(color1_end, color2_end, t);
 
-      console.log(`gradientStart: ${gradientStart}, gradientEnd: ${gradientEnd}`); // デバッグ用
-
-      // 背景グラデーションを更新
       $("body").css(
           "background",
           `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`
       );
+  }
 
-      // 一定位置を超えたらスクロール位置をリセット（無限ループ）
-      if (scrollTop >= contentHeight) {
-          $wrapper.scrollTop(0); // スクロール位置をリセット
+  $window.on("scroll", function () {
+      let scrollTop = $window.scrollTop();
+
+      // 背景グラデーションを更新
+      updateGradient(scrollTop);
+
+      // 最上部 (0vh) に戻った場合、中央 (1200vh) に戻す
+      if (scrollTop <= 0) {
+          $window.scrollTop(contentHeight);
+      }
+      
+      // 最下部 (2400vh) に到達した場合、中央 (1200vh) に戻す
+      if (scrollTop >= contentHeight * 2) {
+          $window.scrollTop(contentHeight);
       }
   });
 });
